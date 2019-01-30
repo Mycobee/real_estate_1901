@@ -1,22 +1,55 @@
 require 'minitest/autorun'
 require 'minitest/pride'
+require_relative '../lib/house'
 require_relative '../lib/room'
+require 'pry'
 
-class RoomTest < Minitest::Test
-  def test_the_room_the_length_and_the_width_attributes
-    room = Room.new(:bedroom, 10, 13)
-    assert_equal room.category, :bedroom
-    assert_equal room.length, 10
-    assert_equal room.width, 13
+
+class HouseTest < Minitest::Test
+  def setup
+    @house = House.new("$400000", "123 sugar lane")
+    @room_1 = Room.new(:bedroom, 10, 13)
+    @room_2 = Room.new(:bedroom, 11, 15)
+    @room_3 = Room.new(:living_room, 25, 15)
+    @room_4 = Room.new(:basement, 30, 41)
   end
 
-  def test_the_area_method
-    room = Room.new(:bedroom, 10, 13)
-
-    assert_equal room.area, 130
+  def test_the_price_and_address_and_rooms_attributes_of_the_house
+    house = House.new("$400000", "123 sugar lane")
+    assert_equal house.price, "$400000"
+    assert_equal house.address, "123 sugar lane"
+    assert_equal house.rooms, []
   end
 
+  def test_the_add_room_method
+    @house.add_room(@room_1)
+    @house.add_room(@room_2)
 
+    assert_equal @house.rooms, [@room_1, @room_2]
+
+    puts @house.rooms
+  end
+
+  def test_rooms_from_category_method
+    skip
+    @house.add_room(@room_1)
+    @house.add_room(@room_2)
+    @house.add_room(@room_3)
+    @house.add_room(@room_4)
+
+    assert_equal @house.rooms_from_category(:bedroom), [@room_1, @room_2]
+    assert_equal @house.rooms_from_category(:basement), [@room_4]
+
+  end
+
+  def test_house_area_function
+    @house.add_room(@room_1)
+    @house.add_room(@room_2)
+    @house.add_room(@room_3)
+    @house.add_room(@room_4)
+
+    assert_equal @house.house_area, 1900
+  end
 end
 
 
